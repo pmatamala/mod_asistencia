@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="mod/asistencia/db" VERSION="20101203" COMMENT="XMLDB file for Moodle mod/asistencia"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="asistencia" COMMENT="Contiene las instancias de asistencia de los cursos">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"/>
+        <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" COMMENT="curso asociado a la asistencia"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Nombre de la actividad asistencia"/>
+        <FIELD NAME="intro" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Introdccion"/>
+        <FIELD NAME="introformat" TYPE="int" LENGTH="4" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" COMMENT="formato de la introduccion"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="grade" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="100" SEQUENCE="false" COMMENT=""/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="course" UNIQUE="false" FIELDS="course"/>
+      </INDEXES>
+    </TABLE>
+	
+	
+	<TABLE NAME="asistencia_sesiones" COMMENT="Sesiones registradas por RBD">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"/>
+        <FIELD NAME="id_asistencia" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" COMMENT="Id de asistencia relacionada"/>
+		<FIELD NAME="rbd" TYPE="char" LENGTH="6" NOTNULL="true" SEQUENCE="false" COMMENT="RBD asociado a la fecha"/>
+		<FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT="id usuario que subió la fecha"/>
+		<FIELD NAME="nombre" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Nombre asociada a la fecha (ejem: sesion x)"/>
+		<FIELD NAME="fecha" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"/>
+		<FIELD NAME="activo" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="si esta activa la fecha"/>
+		<FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+		<KEY NAME="id_asistencia" TYPE="foreign" FIELDS="id_asistencia" REFTABLE="asistencia" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+      </INDEXES>
+    </TABLE>
+	
+	<TABLE NAME="asistencia_participantes" COMMENT="Participantes de las sesiones por RBD">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"/>
+        <FIELD NAME="id_asistencia" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" COMMENT="Id de asistencia relacionada"/>
+		<FIELD NAME="rbd" TYPE="char" LENGTH="6" NOTNULL="true" SEQUENCE="false" COMMENT="RBD asociado al prticipante"/>
+		<FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT="id usuario que subió el participnte"/>
+		<FIELD NAME="nombres" TYPE="char" LENGTH="60" NOTNULL="true" SEQUENCE="false" COMMENT="Nombres del participante"/>
+		<FIELD NAME="apellidos" TYPE="char" LENGTH="60" NOTNULL="true" SEQUENCE="false" COMMENT="Apellidos  del participante"/>
+		<FIELD NAME="curso" TYPE="char" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Curso del participante"/>
+		<FIELD NAME="activo" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="si esta activa el participante"/>
+		<FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+		<KEY NAME="id_asistencia" TYPE="foreign" FIELDS="id_asistencia" REFTABLE="asistencia" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+      </INDEXES>
+    </TABLE>	
+	
+	
+	<TABLE NAME="asistencia_lista" COMMENT="Lista de Participantes que asistieron por sesión">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"/>
+        <FIELD NAME="id_asistencia" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" COMMENT="Id de asistencia relacionada"/>
+        <FIELD NAME="id_participante" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" COMMENT="Id de participante relacionado"/>
+		<FIELD NAME="id_sesion" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" COMMENT="Id de sesión relacionado"/>
+		
+		<FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT="id usuario que subió la lista"/>
+		<FIELD NAME="asistencia" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="asistio o no asistio el participante"/>
+		<FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+		<KEY NAME="id_asistencia" TYPE="foreign" FIELDS="id_asistencia" REFTABLE="asistencia" REFFIELDS="id"/>
+		<KEY NAME="id_participante" TYPE="foreign" FIELDS="id_participante" REFTABLE="asistencia_participantes" REFFIELDS="id"/>
+		<KEY NAME="id_sesion" TYPE="foreign" FIELDS="id_sesion" REFTABLE="asistencia_sesiones" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+      </INDEXES>
+    </TABLE>	
+	
+	
+  </TABLES>
+</XMLDB>
